@@ -8,6 +8,7 @@ class Tensor:
             self.grad = None
         self.requires_grad = requires_grad
         self.gradFn = gradFn
+        self.shape = self.data.shape
     
     def backward(self, psi=None):
         t = self

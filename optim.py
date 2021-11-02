@@ -1,4 +1,5 @@
 import numpy as np
+from tensor import *
 
 # class SGD:
 #     def __init__(self, lr=0.01, minibatch_size=1):
@@ -22,6 +23,72 @@ import numpy as np
 #         grads = np.mean(grads[idx], axis=0)
 #         self.v = self.momentum * self.v + (1 - self.momentum) * grads
 #         return -self.lr * self.v
+
+class SGD:
+    def __init__(self, params, lr=0.01, minibatch_size=1):
+        self.params = params
+        self.lr = lr
+        self.minibatch_size = minibatch_size
+    
+    def update_param_dict(self, params, prefix=""):
+        for k, v in params.items():
+            if isinstance(v, Tensor):
+                grads = v.grad
+                if grads is None:
+                    pass
+                if len(grads.shape) != len(v.shape):
+                    if self.minibatch_size > grads.shape[0]:
+                        raise ValueError(f"Minibatch Size of {self.minibatch_size} is greater than gradient size of {grads.shape[0]}")
+                    idx = np.random.choice(range(grads.shape[0]), self.minibatch_size, replace=False)
+                    grads = np.mean(grads[idx], axis=0)
+                v.data += -self.lr * grads
+            elif isinstance(v, dict):
+                self.update_param_dict(v, prefix=f"{prefix}_{k}_")
+            else:
+                raise RuntimeWarning(f"Encountered Unknown Parameter Type: {k}: {v}")
+    
+    def step(self):
+        self.update_param_dict(self.params)
+
+class SGD_Momentum:
+    def __init__(self, params, lr=0.01, momentum=0.9, minibatch_size=1):
+        self.params = params
+        self.opt_vars = {}
+        self.lr = lr
+        self.momentum = momentum
+        self.minibatch_size = minibatch_size
+
+        self.build_opt_vars()
+    
+    def build_opt_vars(self, params, prefix=""):
+        for k, v in params.items():
+            name = f"{prefix}_{k}"
+            if isinstance(v, Tensor):
+                self.opt_vars[name] = {'v': None}
+            elif isinstance(v, dict):
+                self.build_opt_vars(v, prefix=name+"_")
+            else:
+                raise RuntimeWarning(f"Encountered Unknown Parameter Type: {k}: {v}")
+    
+    def update_param_dict(self, params, prefix=""):
+        for k, v in params.items():
+            if isinstance(v, Tensor):
+                name = f"{prefix}_{k}"
+                grads = v.grad
+                if grads is None:
+                    pass
+                if len(grads.shape) != len(v.shape):
+                    if self.minibatch_size > grads.shape[0]:
+                        raise ValueError(f"Minibatch Size of {self.minibatch_size} is greater than gradient size of {grads.shape[0]}")
+                    idx = np.random.choice(range(grads.shape[0]), self.minibatch_size, replace=False)
+                    grads = np.mean(grads[idx], axis=0)
+                 
+                self.opt_vars[name]['v'] = self.momentum * self.opt_vars[name]['v'] + (1 - self.momentum) * grads
+                v.data += -self.lr * self.opt_vars[name]['v']
+            elif isinstance(v, dict):
+                self.update_param_dict(v, prefix=name+"_")
+            else:
+                raise RuntimeWarning(f"Encountered Unknown Parameter Type: {k}: {v}")
 
 # class Adam:
 #     def __init__(self, lr=0.01, beta1=0.9, beta2=0.999, minibatch_size=1):

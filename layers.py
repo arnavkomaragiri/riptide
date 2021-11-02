@@ -29,7 +29,15 @@ class Module:
             var.zero_grad()
 
     def parameters(self):
-        vars = [(n, v) for n, v in self.__dict__.items() if isinstance(v, Module) or isinstance(v, Tensor)]
+        # this is very good code, not at all messy
+        vars = []
+        for n, var in self.__dict__.items():
+            # take modules/tensors and add them to the parameters
+            if isinstance(var, Module) or isinstance(var, Tensor):
+                vars += [(n, var)]
+            # unwrap lists of modules/tensors and add them to the list of usable variables
+            elif isinstance(var, list):
+                vars += [(f"{n}_{i}", v) for i, v in enumerate(var) if isinstance(v, Tensor) or isinstance(v, Module)]
         return {n: v.parameters() if isinstance(v, Module) else v for n, v in vars}
 
 class Identity(Module):
