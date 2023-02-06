@@ -45,6 +45,7 @@ else:
     print("Loading Cached Datasets...")
     batch_train, batch_test = read_dataset("train.pkl"), read_dataset("test.pkl")
 
+model = DenseModel(784, 100, 10)
 optimizer = riptide.optim.Adam(model.parameters(), lr=0.0005, minibatch_size=minibatch_size)
 for i in range(epochs):
     # train set
@@ -113,6 +114,7 @@ else:
     print("Loading Cached Datasets...")
     batch_train, batch_test = read_dataset("train.pkl"), read_dataset("test.pkl")
 
+model = DenseModel(784, 100, 10)
 optimizer = riptide.optim.Adam(model.parameters(), lr=0.0005, minibatch_size=minibatch_size)
 for i in range(epochs):
     # train set
