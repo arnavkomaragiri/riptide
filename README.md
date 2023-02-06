@@ -1,5 +1,5 @@
 # Riptide
-A deep learning library authored by Arnav Komaragiri for EECE5136 Intelligent Systems
+A deep learning library authored by Arnav Komaragiri
 
 [Paper Written in EECS Student Magazine 2021-2022 edition](https://drive.google.com/file/d/1Mrsi3H2t7u8lHXqsHflU7LiM_96PHeuT/view) 
 
