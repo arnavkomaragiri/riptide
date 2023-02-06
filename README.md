@@ -34,7 +34,6 @@ img_path, label_path = "MNISTnumImages5000_balanced.txt", "MNISTnumLabels5000_ba
 batch_size = 40
 if not os.path.exists("train.pkl") or not os.path.exists("test.pkl"):
     dataset, mean, std = load_dataset(os.path.join(data_path, img_path), os.path.join(data_path, label_path), standardize=True)
-    # mean, std = mean.reshape((-1, 1)), std.reshape((-1, 1))
     train, test = stratified_train_test_split(dataset)
 
     one_hot_train, one_hot_test = one_hot_encode(train, 10), one_hot_encode(test, 10)
@@ -103,7 +102,6 @@ img_path, label_path = "MNISTnumImages5000_balanced.txt", "MNISTnumLabels5000_ba
 batch_size = 40
 if not os.path.exists("train.pkl") or not os.path.exists("test.pkl"):
     dataset, mean, std = load_dataset(os.path.join(data_path, img_path), os.path.join(data_path, label_path), standardize=True)
-    # mean, std = mean.reshape((-1, 1)), std.reshape((-1, 1))
     train, test = stratified_train_test_split(dataset)
 
     one_hot_train, one_hot_test = one_hot_encode(train, 10), one_hot_encode(test, 10)
