@@ -1,7 +1,7 @@
 # Riptide
 A deep learning library authored by Arnav Komaragiri
 
-[Paper Written in EECS Student Magazine 2021-2022 edition](https://drive.google.com/file/d/1Mrsi3H2t7u8lHXqsHflU7LiM_96PHeuT/view) 
+[Paper Written in EECS Student Magazine 2021-2022 Edition](https://drive.google.com/file/d/1Mrsi3H2t7u8lHXqsHflU7LiM_96PHeuT/view) 
 
 Note: This isn't PyTorch, I know the syntax looks a lot like it, but I just really like PyTorch syntax.
 
