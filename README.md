@@ -27,6 +27,24 @@ class DenseModel(riptide.layers.Module):
         x = self.linear_tail(x)
         x = self.sigmoid(x)
         return x
+        
+data_path = "HW2_datafiles"
+img_path, label_path = "MNISTnumImages5000_balanced.txt", "MNISTnumLabels5000_balanced.txt"
+
+batch_size = 40
+if not os.path.exists("train.pkl") or not os.path.exists("test.pkl"):
+    dataset, mean, std = load_dataset(os.path.join(data_path, img_path), os.path.join(data_path, label_path), standardize=True)
+    # mean, std = mean.reshape((-1, 1)), std.reshape((-1, 1))
+    train, test = stratified_train_test_split(dataset)
+
+    one_hot_train, one_hot_test = one_hot_encode(train, 10), one_hot_encode(test, 10)
+
+    batch_train, batch_test = batch_dataset(one_hot_train, batch_size), batch_dataset(one_hot_test, batch_size)
+    save_dataset(batch_train, "train.pkl")
+    save_dataset(batch_test, "test.pkl")
+else:
+    print("Loading Cached Datasets...")
+    batch_train, batch_test = read_dataset("train.pkl"), read_dataset("test.pkl")
 
 optimizer = riptide.optim.Adam(model.parameters(), lr=0.0005, minibatch_size=minibatch_size)
 for i in range(epochs):
@@ -78,6 +96,24 @@ class DenseModel(riptide.layers.Module):
         if np.random.uniform() > 0.5:
             x = self.rand_tail(x)
         return x
+        
+data_path = "HW2_datafiles"
+img_path, label_path = "MNISTnumImages5000_balanced.txt", "MNISTnumLabels5000_balanced.txt"
+
+batch_size = 40
+if not os.path.exists("train.pkl") or not os.path.exists("test.pkl"):
+    dataset, mean, std = load_dataset(os.path.join(data_path, img_path), os.path.join(data_path, label_path), standardize=True)
+    # mean, std = mean.reshape((-1, 1)), std.reshape((-1, 1))
+    train, test = stratified_train_test_split(dataset)
+
+    one_hot_train, one_hot_test = one_hot_encode(train, 10), one_hot_encode(test, 10)
+
+    batch_train, batch_test = batch_dataset(one_hot_train, batch_size), batch_dataset(one_hot_test, batch_size)
+    save_dataset(batch_train, "train.pkl")
+    save_dataset(batch_test, "test.pkl")
+else:
+    print("Loading Cached Datasets...")
+    batch_train, batch_test = read_dataset("train.pkl"), read_dataset("test.pkl")
 
 optimizer = riptide.optim.Adam(model.parameters(), lr=0.0005, minibatch_size=minibatch_size)
 for i in range(epochs):
