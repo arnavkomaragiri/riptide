@@ -2,7 +2,7 @@ import numpy as np
 import numba as nb
 
 class Tensor:
-    def __init__(self, x, requires_grad=True, dtype=np.float32, gradFn=None):
+    def __init__(self, x, requires_grad=True, dtype=np.float64, gradFn=None):
         self.data = np.array(x, dtype=dtype)
         if requires_grad:
             self.grad = None
@@ -24,7 +24,7 @@ class Tensor:
         if self.grad is None:
             self.grad = g
         else:
-            self.grad += g
+            self.grad = self.grad + g
     
     def zero_grad(self):
         if not self.requires_grad:
